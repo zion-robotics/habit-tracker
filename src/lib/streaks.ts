@@ -6,12 +6,23 @@ export function calculateCurrentStreak(completions: string[], today?: string): n
 
   if (unique.length === 0) return 0;
 
-  // If today is not completed, streak is 0
-  if (!unique.includes(todayStr)) return 0;
+  // Determine starting point for counting
+  let current: string;
+  
+  if (!unique.includes(todayStr)) {
+    // Today not completed, check yesterday
+    const date = new Date(todayStr + 'T00:00:00Z');
+    date.setUTCDate(date.getUTCDate() - 1);
+    const yesterdayStr = date.toISOString().split('T')[0];
+    
+    if (!unique.includes(yesterdayStr)) return 0;
+    current = yesterdayStr;
+  } else {
+    current = todayStr;
+  }
 
   // Count consecutive days backwards from today
   let streak = 0;
-  let current = todayStr;
 
   while (unique.includes(current)) {
     streak++;
