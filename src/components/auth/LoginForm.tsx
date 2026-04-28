@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { logIn } from '@/lib/auth';
 import Link from 'next/link';
@@ -11,6 +11,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,19 +19,25 @@ export default function LoginForm() {
     setLoading(true);
 
     if (!email || !password) {
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
       setError('Email and password are required');
+      errorTimerRef.current = setTimeout(() => setError(null), 5000);
       setLoading(false);
       return;
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
       setError('Please enter a valid email address');
+      errorTimerRef.current = setTimeout(() => setError(null), 5000);
       setLoading(false);
       return;
     }
 
     if (password.length < 6) {
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
       setError('Password must be at least 6 characters');
+      errorTimerRef.current = setTimeout(() => setError(null), 5000);
       setLoading(false);
       return;
     }
@@ -40,11 +47,13 @@ export default function LoginForm() {
       router.push('/dashboard');
     } else {
       const errorMessage = result.error ?? 'Login failed';
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
       if (errorMessage.toLowerCase().includes('registered') || errorMessage.toLowerCase().includes('exists') || errorMessage.toLowerCase().includes('already')) {
         setError('This email is already registered. Please sign in instead.');
       } else {
         setError(errorMessage);
       }
+      errorTimerRef.current = setTimeout(() => setError(null), 10000);
       setLoading(false);
     }
   };
@@ -94,9 +103,13 @@ export default function LoginForm() {
           </div>
 
           {error && (
-            <p role="alert" className="text-red-600 text-sm mb-4 text-center">
-              {error}
-            </p>
+            <div
+              role="alert"
+              className="flex items-start gap-2 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3 mb-4 animate-shake"
+            >
+              <span className="text-lg leading-none mt-0.5">⚠️</span>
+              <span>{error}</span>
+            </div>
           )}
 
           <button
