@@ -27,8 +27,8 @@ export default function LoginForm() {
       if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
       errorTimerRef.current = setTimeout(() => {
         setErrorVisible(false);
-        setTimeout(() => setError(null), 700);
-      }, 4300);
+        setTimeout(() => setError(null), 2000);
+      }, 3000);
       setLoading(false);
       return;
     }
@@ -40,8 +40,8 @@ export default function LoginForm() {
       if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
       errorTimerRef.current = setTimeout(() => {
         setErrorVisible(false);
-        setTimeout(() => setError(null), 700);
-      }, 4300);
+        setTimeout(() => setError(null), 2000);
+      }, 3000);
       setLoading(false);
       return;
     }
@@ -53,8 +53,8 @@ export default function LoginForm() {
       if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
       errorTimerRef.current = setTimeout(() => {
         setErrorVisible(false);
-        setTimeout(() => setError(null), 700);
-      }, 4300);
+        setTimeout(() => setError(null), 2000);
+      }, 3000);
       setLoading(false);
       return;
     }
@@ -74,8 +74,8 @@ export default function LoginForm() {
       if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
       errorTimerRef.current = setTimeout(() => {
         setErrorVisible(false);
-        setTimeout(() => setError(null), 700);
-      }, 4300);
+        setTimeout(() => setError(null), 2000);
+      }, 3000);
       setLoading(false);
     }
   };
@@ -129,7 +129,7 @@ export default function LoginForm() {
               role="alert"
               style={{
                 opacity: errorVisible ? 1 : 0,
-                transition: 'opacity 0.7s ease-in-out',
+                transition: 'opacity 2s ease-in-out',
               }}
               className="flex items-start gap-2 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3 mb-4"
             >
