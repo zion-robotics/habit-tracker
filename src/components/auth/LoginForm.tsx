@@ -17,11 +17,34 @@ export default function LoginForm() {
     setError(null);
     setLoading(true);
 
-    const result = logIn(email, password);
+    if (!email || !password) {
+      setError('Email and password are required');
+      setLoading(false);
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Please enter a valid email address');
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      setLoading(false);
+      return;
+    }
+
+    const result = await logIn(email, password);
     if (result.success) {
       router.push('/dashboard');
     } else {
-      setError(result.error ?? 'Login failed');
+      const errorMessage = result.error ?? 'Login failed';
+      if (errorMessage.toLowerCase().includes('registered') || errorMessage.toLowerCase().includes('exists') || errorMessage.toLowerCase().includes('already')) {
+        setError('This email is already registered. Please sign in instead.');
+      } else {
+        setError(errorMessage);
+      }
       setLoading(false);
     }
   };

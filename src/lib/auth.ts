@@ -1,7 +1,7 @@
 import type { User, Session } from '@/types/auth';
 import { getUsers, saveUsers, getSession, saveSession, clearSession } from './storage';
 
-export function signUp(email: string, password: string): { success: boolean; error?: string; session?: Session } {
+export async function signUp(email: string, password: string): Promise<{ success: boolean; error?: string; session?: Session }> {
   const users = getUsers();
   const existing = users.find(u => u.email.toLowerCase() === email.toLowerCase());
 
@@ -24,12 +24,16 @@ export function signUp(email: string, password: string): { success: boolean; err
   return { success: true, session };
 }
 
-export function logIn(email: string, password: string): { success: boolean; error?: string; session?: Session } {
+export async function logIn(email: string, password: string): Promise<{ success: boolean; error?: string; session?: Session }> {
   const users = getUsers();
-  const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+  const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
 
   if (!user) {
-    return { success: false, error: 'Invalid email or password' };
+    return { success: false, error: 'No account found with this email. Please sign up first.' };
+  }
+
+  if (user.password !== password) {
+    return { success: false, error: 'Invalid password' };
   }
 
   const session: Session = { userId: user.id, email: user.email };

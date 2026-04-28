@@ -23,7 +23,19 @@ export default function SignupForm() {
       return;
     }
 
-    const result = signUp(email, password);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Please enter a valid email address');
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      setLoading(false);
+      return;
+    }
+
+    const result = await signUp(email, password);
     if (result.success) {
       router.push('/dashboard');
     } else {
