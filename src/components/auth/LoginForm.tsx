@@ -65,11 +65,7 @@ export default function LoginForm() {
     } else {
       const errorMessage = result.error ?? 'Login failed';
       if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
-      if (errorMessage.toLowerCase().includes('registered') || errorMessage.toLowerCase().includes('exists') || errorMessage.toLowerCase().includes('already')) {
-        setError('User already exists.');
-      } else {
-        setError(errorMessage);
-      }
+      setError(errorMessage);
       setErrorVisible(true);
       if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
       errorTimerRef.current = setTimeout(() => {

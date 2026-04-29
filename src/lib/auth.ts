@@ -29,11 +29,11 @@ export async function logIn(email: string, password: string): Promise<{ success:
   const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
 
   if (!user) {
-    return { success: false, error: 'No account found with this email. Please sign up first.' };
+    return { success: false, error: 'Invalid email or password' };
   }
 
   if (user.password !== password) {
-    return { success: false, error: 'Invalid password' };
+    return { success: false, error: 'Invalid email or password' };
   }
 
   const session: Session = { userId: user.id, email: user.email };

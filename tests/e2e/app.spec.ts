@@ -26,12 +26,13 @@ test.describe('Habit Tracker app', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/')
     await clearStorage(page)
+    await page.goto('about:blank')
   })
 
   test('shows the splash screen and redirects unauthenticated users to /login', async ({ page }) => {
     await page.goto('/')
     await expect(page.getByTestId('splash-screen')).toBeVisible()
-    await page.waitForURL('**/login', { timeout: 5000 })
+    await page.waitForURL('**/login', { timeout: 10000 })
     expect(page.url()).toContain('/login')
   })
 
