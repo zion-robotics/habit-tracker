@@ -2,7 +2,7 @@ export function calculateCurrentStreak(completions: string[], today?: string): n
   const todayStr = today ?? new Date().toISOString().split('T')[0];
 
   // Remove duplicates and sort
-  const unique = [...new Set(completions)].sort();
+  const unique = Array.from(new Set(completions)).sort();
 
   if (unique.length === 0) return 0;
 

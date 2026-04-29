@@ -12,7 +12,7 @@ export function toggleHabitCompletion(habit: Habit, date: string): Habit {
   }
 
   // Ensure no duplicates
-  const unique = [...new Set(completions)];
+  const unique = Array.from(new Set(completions));
 
   return { ...habit, completions: unique };
 }
